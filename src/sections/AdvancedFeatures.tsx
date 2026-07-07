@@ -9,9 +9,6 @@ import {
   staticFile,
 } from "remotion";
 import {
-  FaWind,
-  FaTint,
-  FaLink,
   FaSlack,
   FaDiscord,
   FaMicrosoft,
@@ -21,8 +18,11 @@ import { COLORS, fontFamily } from "../constants";
 
 const SUB_SCENE_DURATION = 180;
 
-/* ── Sub-scene A: Focus Flow ── */
-const FocusFlow: React.FC = () => {
+// Context-window states mirror the product's status-line color coding.
+const YELLOW = "#FFC400";
+
+/* ── Sub-scene A: Status Line ── */
+const StatusLine: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -41,15 +41,15 @@ const FocusFlow: React.FC = () => {
     extrapolateRight: "clamp",
   });
 
-  const modesOpacity = interpolate(frame, [70, 85], [0, 1], {
+  const chipsOpacity = interpolate(frame, [80, 95], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const modes = [
-    { icon: <FaWind />, label: "Breathing" },
-    { icon: <FaTint />, label: "Hydration" },
-    { icon: <FaLink />, label: "URL / Command" },
+  const states = [
+    { color: COLORS.green, label: "Safe", range: "< 50%" },
+    { color: YELLOW, label: "Watch", range: "50–80%" },
+    { color: COLORS.red, label: "Compact", range: "> 80%" },
   ];
 
   return (
@@ -78,125 +78,139 @@ const FocusFlow: React.FC = () => {
           textTransform: "uppercase",
         }}
       >
-        Focus Flow
+        Status Line
       </div>
 
-      {/* Main content: screenshot left + text/modes right */}
+      {/* Vertical stack: wide screenshot on top, text + states below */}
       <div
         style={{
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          gap: 50,
+          gap: 34,
         }}
       >
-        {/* Real screenshot */}
+        {/* Real status-line screenshot (wide strip, as seen in the terminal) */}
         <div
           style={{
             transform: `scale(${Math.min(imgScale, 1)})`,
             borderRadius: 12,
             overflow: "hidden",
-            boxShadow: `0 10px 40px rgba(0,0,0,0.5), 0 0 ${30 * glowPulse}px ${COLORS.green}33`,
+            boxShadow: `0 10px 40px rgba(0,0,0,0.5), 0 0 ${34 * glowPulse}px ${COLORS.green}44`,
           }}
         >
           <Img
-            src={staticFile("demo-focus-flow.png")}
+            src={staticFile("statusline-context-monitor.png")}
             style={{
-              width: 620,
-              height: 420,
-              objectFit: "cover",
+              width: 1180,
+              height: "auto",
+              display: "block",
               borderRadius: 12,
-              border: `2px solid ${COLORS.green}33`,
+              border: `2px solid ${COLORS.green}44`,
             }}
           />
         </div>
 
-        {/* Text + mode icons */}
+        {/* Heading */}
+        <div
+          style={{
+            fontFamily,
+            fontSize: 36,
+            fontWeight: 700,
+            color: COLORS.white,
+            opacity: textOpacity,
+            textAlign: "center",
+          }}
+        >
+          Never lose your <span style={{ color: COLORS.green }}>place.</span>
+        </div>
+
+        {/* Body */}
+        <div
+          style={{
+            fontFamily,
+            fontSize: 18,
+            color: COLORS.white,
+            opacity: textOpacity * 0.6,
+            textAlign: "center",
+            lineHeight: 1.5,
+          }}
+        >
+          A live status line pins context-window usage, quota, and git state to your terminal.
+        </div>
+
+        {/* Context-state indicators + segment count */}
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: 24,
-            maxWidth: 420,
+            alignItems: "center",
+            gap: 40,
+            opacity: chipsOpacity,
           }}
         >
-          <div
-            style={{
-              fontFamily,
-              fontSize: 32,
-              fontWeight: 700,
-              color: COLORS.white,
-              opacity: textOpacity,
-              lineHeight: 1.3,
-            }}
-          >
-            Stay centered while
-            <br />
-            <span style={{ color: COLORS.green }}>Claude thinks.</span>
-          </div>
-
-          <div
-            style={{
-              fontFamily,
-              fontSize: 17,
-              color: COLORS.white,
-              opacity: textOpacity * 0.6,
-              lineHeight: 1.5,
-            }}
-          >
-            Guided breathing exercises launch automatically.
-            <br />
-            Close when Claude finishes.
-          </div>
-
-          {/* Mode icons */}
-          <div style={{ display: "flex", gap: 24, opacity: modesOpacity }}>
-            {modes.map((mode, i) => {
-              const scale = spring({
-                frame: frame - 75 - i * 8,
-                fps,
-                config: { damping: 10, mass: 0.5 },
-              });
-              return (
+          {states.map((state, i) => {
+            const scale = spring({
+              frame: frame - 85 - i * 8,
+              fps,
+              config: { damping: 10, mass: 0.5 },
+            });
+            return (
+              <div
+                key={state.label}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  transform: `scale(${scale})`,
+                }}
+              >
                 <div
-                  key={mode.label}
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 6,
-                    transform: `scale(${scale})`,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    backgroundColor: state.color,
+                    boxShadow: `0 0 14px ${state.color}aa`,
                   }}
-                >
-                  <div
+                />
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span
                     style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 10,
-                      border: `1.5px solid ${COLORS.green}66`,
-                      backgroundColor: `${COLORS.green}10`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 20,
-                      color: COLORS.green,
+                      fontFamily,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: COLORS.white,
+                      opacity: 0.9,
                     }}
                   >
-                    {mode.icon}
-                  </div>
+                    {state.label}
+                  </span>
                   <span
                     style={{
                       fontFamily,
                       fontSize: 12,
                       color: COLORS.white,
-                      opacity: 0.7,
+                      opacity: 0.5,
                     }}
                   >
-                    {mode.label}
+                    {state.range}
                   </span>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+
+          <div
+            style={{
+              fontFamily,
+              fontSize: 14,
+              color: COLORS.green,
+              letterSpacing: 1,
+              borderLeft: `1px solid ${COLORS.green}44`,
+              paddingLeft: 40,
+            }}
+          >
+            29 customizable segments
           </div>
         </div>
       </div>
@@ -324,12 +338,12 @@ const Webhooks: React.FC = () => {
   );
 };
 
-/* ── Main AdvancedFeatures orchestrator ── */
+/* ── Main AdvancedFeatures orchestrator (Status Line + Webhooks) ── */
 export const AdvancedFeatures: React.FC = () => {
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <Sequence durationInFrames={SUB_SCENE_DURATION}>
-        <FocusFlow />
+        <StatusLine />
       </Sequence>
       <Sequence from={SUB_SCENE_DURATION} durationInFrames={SUB_SCENE_DURATION}>
         <Webhooks />

@@ -29,7 +29,7 @@ https://github.com/user-attachments/assets/3504d214-efac-4e01-84c0-426430b842d6
 | Format | MP4 (H.264) |
 | Font | Inter (Google Fonts) |
 | Brand Colors | `#16F800` (green), `#000000` (black) |
-| Version | v5.2.1 |
+| Version | v6.3.3 |
 
 ## Video Structure
 
@@ -51,15 +51,15 @@ graph LR
 
 | # | Section | Duration | Description |
 |---|---------|----------|-------------|
-| 1 | Intro / Logo Reveal | 5.0s | Scan line sweep, logo materialization, particle burst (v5.2.1) |
+| 1 | Intro / Logo Reveal | 5.0s | Scan line sweep, logo materialization, particle burst (v6.3.3) |
 | 2 | Problem Statement | 7.0s | Terminal shows missed authorization, red vignette |
-| 3 | Solution Reveal | 11.0s | Dramatic circle reveal, badges: 26 Hook Types, Focus Flow, Webhooks |
-| 4 | Feature Highlights | 20.0s | 4 sub-scenes (Quick Setup, 26 Hook Types, Audio Sets, Open Source) |
-| 5 | Advanced Features | 12.0s | 2 sub-scenes (Focus Flow with real screenshot, Webhooks: Slack/Discord/Teams/ntfy) |
+| 3 | Solution Reveal | 11.0s | Dramatic circle reveal, badges: 39 Hook Events, Status Line, Webhooks |
+| 4 | Feature Highlights | 20.0s | 4 sub-scenes (Setup, 39 Hook Events, Audio Sets, Open Source) |
+| 5 | Advanced Features | 12.0s | 2 sub-scenes (Status Line with real screenshot, Webhooks: Slack/Discord/Teams/ntfy) |
 | 6 | Demo Showcase | 12.0s | Real screen recording of the product in action |
 | 7 | Ecosystem | 8.0s | Smart Matchers, Async Execution, Snooze feature cards |
-| 8 | Cross-Platform | 9.0s | 3 AI-editor icons (Claude Code · Cursor · Codex CLI), 4 animated counters (26 hooks, 5 channels) |
-| 9 | Call to Action | 10.0s | Quick Setup curl command, GitHub link, tagline |
+| 8 | Cross-Platform | 9.0s | 3 AI-editor icons (Claude Code · Cursor · Codex CLI), 4 animated counters (39 hooks, 4 channels) |
+| 9 | Call to Action | 10.0s | AI-agent install prompt, GitHub link, tagline |
 
 ### Audio Layer
 
@@ -82,7 +82,6 @@ gantt
     Whoosh T3     :625, 655
     Notification  :945, 990
     Whoosh T4     :1205, 1235
-    Breathe SFX   :1225, 1345
     Whoosh T5     :1545, 1575
     Whoosh T6     :1885, 1915
     Whoosh T7     :2105, 2135
@@ -128,9 +127,11 @@ npm run render
 ```
 echook-promo-video/
 ├── public/                          # Static assets
-│   ├── claude-code-audio-hooks-logo.svg
+│   ├── echook-logo.svg
 │   ├── demo-task-complete.mp4       # Screen recording
-│   ├── demo-focus-flow.png          # Focus Flow screenshot
+│   ├── statusline-context-monitor.png  # Status Line screenshot
+│   ├── sound-voice.mp3              # Real echook sample: Jessica voice (Audio Sets)
+│   ├── sound-chime.mp3              # Real echook sample: UI chime (Audio Sets)
 │   ├── bgm.mp3                      # Background music (Suno)
 │   ├── vo-reveal.mp3                # Voiceover (ElevenLabs)
 │   ├── vo-features.mp3              # Voiceover (ElevenLabs)
@@ -142,7 +143,8 @@ echook-promo-video/
 │   ├── sfx-notification.mp3         # Sound effect (ElevenLabs)
 │   └── sfx-success.mp3              # Sound effect (ElevenLabs)
 ├── scripts/
-│   └── generate-audio.mjs           # ElevenLabs audio generation
+│   ├── generate-audio.mjs           # ElevenLabs audio generation (full)
+│   └── regenerate-vo.mjs            # Re-render only the 3 voiceover files
 ├── src/
 │   ├── Root.tsx                      # Remotion entry point
 │   ├── PromoVideo.tsx                # Main orchestrator (TransitionSeries + Audio)
@@ -157,7 +159,7 @@ echook-promo-video/
 │   │   │   ├── HookTypes.tsx
 │   │   │   ├── AudioSets.tsx
 │   │   │   └── OpenSource.tsx
-│   │   ├── AdvancedFeatures.tsx      # Focus Flow + Webhooks
+│   │   ├── AdvancedFeatures.tsx      # Status Line + Webhooks
 │   │   ├── DemoShowcase.tsx
 │   │   ├── Ecosystem.tsx             # Smart Matchers + Async + Snooze
 │   │   ├── CrossPlatform.tsx
@@ -187,7 +189,7 @@ graph TD
     PV --> VL[Visual Layer<br/>TransitionSeries]
 
     AL --> BGM[BackgroundMusic<br/>Volume ducking]
-    AL --> SFX[SFX Sequences<br/>scan, whoosh, reveal,<br/>breathe, notification, success]
+    AL --> SFX[SFX Sequences<br/>scan, whoosh, reveal,<br/>notification, success]
     AL --> VO[Voiceover Sequences<br/>vo-reveal, vo-features, vo-cta]
 
     VL --> S1[IntroLogoReveal]
@@ -205,7 +207,7 @@ graph TD
     S4 --> F3[AudioSets]
     S4 --> F4[OpenSource]
 
-    S5 --> AF1[FocusFlow]
+    S5 --> AF1[StatusLine]
     S5 --> AF2[Webhooks]
 ```
 
@@ -233,13 +235,15 @@ cp .env.example .env
 npm run generate-audio
 ```
 
+> **Voiceover only?** To re-render just the three voiceover files (e.g. after a copy change) without spending credits on BGM/SFX, run `node --env-file=.env scripts/regenerate-vo.mjs`.
+
 The script generates:
 
 | File | Type | API Endpoint | Description |
 |------|------|-------------|-------------|
-| `vo-reveal.mp3` | Voiceover | `/text-to-speech` | "Introducing echook. Twenty-six hooks. Three AI editors. Zero latency. Total awareness." |
-| `vo-features.mp3` | Voiceover | `/text-to-speech` | "Focus Flow keeps you centered. Webhooks keep you connected." |
-| `vo-cta.mp3` | Voiceover | `/text-to-speech` | "Never miss a notification. Never lose your flow. Try it in 30 seconds." |
+| `vo-reveal.mp3` | Voiceover | `/text-to-speech` | "Introducing eck hook. Thirty-nine hooks. Three AI editors. Zero latency. Total awareness." (*"eck hook"* is the phonetic spelling of "echook" for TTS) |
+| `vo-features.mp3` | Voiceover | `/text-to-speech` | "A live status line keeps you oriented. Webhooks keep you connected." |
+| `vo-cta.mp3` | Voiceover | `/text-to-speech` | "Never miss a notification. Never lose your place. Just tell your agent to install it." |
 | `sfx-scan.mp3` | SFX | `/sound-generation` | Futuristic digital scan line sweep |
 | `sfx-whoosh.mp3` | SFX | `/sound-generation` | Cinematic whoosh transition |
 | `sfx-reveal.mp3` | SFX | `/sound-generation` | Dramatic reveal impact |
@@ -260,7 +264,7 @@ Futuristic, minimal, polished synth soundscape.
 Starts with soft digital pulse, builds tension with atmospheric pads,
 then opens into a confident mid-tempo electronic groove with clean arpeggiated synths.
 Tech product promotional feel. Subtle bass, no vocals, no guitar.
-D minor, 100 BPM, 72 seconds.
+D minor, 100 BPM, 50 seconds.
 ```
 
 Download the result and save it as `public/bgm.mp3`.

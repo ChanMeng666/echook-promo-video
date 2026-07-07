@@ -33,7 +33,7 @@ import { CallToAction } from "./sections/CallToAction";
  *   4C AudioSets:              930 – 1079
  *   4D OpenSource:            1080 – 1229
  * Section 5 (AdvancedFeatures):1210 – 1569
- *   5A FocusFlow:             1210 – 1389
+ *   5A StatusLine:            1210 – 1389
  *   5B Webhooks:              1390 – 1569
  * Section 6 (Demo):          1550 – 1909
  * Section 7 (Ecosystem):     1890 – 2129
@@ -75,23 +75,31 @@ const BackgroundMusic: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Duck during VO features (advanced features section, global ~1260)
+  // Duck during Audio Sets samples (voice @960, chime @1008)
+  const audioSetsDuck = interpolate(
+    frame,
+    [950, 962, 1068, 1080],
+    [1, 0.4, 0.4, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  // Duck during VO features (advanced features section, global 1260–1415)
   const voFeaturesDuck = interpolate(
     frame,
-    [1250, 1260, 1355, 1370],
+    [1250, 1260, 1415, 1430],
     [1, 0.25, 0.25, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Duck during CTA voiceover (global ~2480)
+  // Duck during CTA voiceover (global 2480–2642)
   const voCtaDuck = interpolate(
     frame,
-    [2470, 2480, 2620, 2635],
+    [2470, 2480, 2642, 2655],
     [1, 0.25, 0.25, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  const volume = 0.3 * fadeIn * fadeOut * demoDuck * voRevealDuck * voFeaturesDuck * voCtaDuck;
+  const volume = 0.3 * fadeIn * fadeOut * demoDuck * audioSetsDuck * voRevealDuck * voFeaturesDuck * voCtaDuck;
 
   return <Audio src={staticFile("bgm.mp3")} volume={volume} />;
 };
@@ -132,9 +140,13 @@ export const PromoVideo: React.FC = () => {
         <Audio src={staticFile("sfx-whoosh.mp3")} volume={0.3} />
       </Sequence>
 
-      {/* SFX: Notification chime (Section 4C AudioSets, global ~945) */}
-      <Sequence from={945} durationInFrames={45}>
-        <Audio src={staticFile("sfx-notification.mp3")} volume={0.45} />
+      {/* Audio Sets samples (Section 4C): real echook sounds so viewers hear
+          the two themes back-to-back — voice first, then chime. */}
+      <Sequence from={960} durationInFrames={45}>
+        <Audio src={staticFile("sound-voice.mp3")} volume={0.9} />
+      </Sequence>
+      <Sequence from={1008} durationInFrames={66}>
+        <Audio src={staticFile("sound-chime.mp3")} volume={0.75} />
       </Sequence>
 
       {/* SFX: Transition 4 whoosh (Features→AdvancedFeatures, ~frame 1210) */}
@@ -142,13 +154,8 @@ export const PromoVideo: React.FC = () => {
         <Audio src={staticFile("sfx-whoosh.mp3")} volume={0.3} />
       </Sequence>
 
-      {/* SFX: Breathe ambient (Focus Flow sub-scene, global ~1225) */}
-      <Sequence from={1225} durationInFrames={120}>
-        <Audio src={staticFile("sfx-breathe.mp3")} volume={0.35} />
-      </Sequence>
-
-      {/* VO: Features narration (AdvancedFeatures section, global ~1260) */}
-      <Sequence from={1260} durationInFrames={100}>
+      {/* VO: Features narration (AdvancedFeatures section, global 1260, ~5.2s) */}
+      <Sequence from={1260} durationInFrames={160}>
         <Audio src={staticFile("vo-features.mp3")} volume={0.85} />
       </Sequence>
 
@@ -179,8 +186,8 @@ export const PromoVideo: React.FC = () => {
         <Audio src={staticFile("sfx-whoosh.mp3")} volume={0.3} />
       </Sequence>
 
-      {/* VO: CTA narration (Section 9, local ~frame 120 → global 2480) */}
-      <Sequence from={2480} durationInFrames={150}>
+      {/* VO: CTA narration (Section 9, local ~frame 120 → global 2480, ~5.4s) */}
+      <Sequence from={2480} durationInFrames={165}>
         <Audio src={staticFile("vo-cta.mp3")} volume={0.9} />
       </Sequence>
 
@@ -226,7 +233,7 @@ export const PromoVideo: React.FC = () => {
           timing={linearTiming({ durationInFrames: DURATIONS.transition4 })}
         />
 
-        {/* Section 5: Advanced Features (Focus Flow + Webhooks) */}
+        {/* Section 5: Advanced Features (Status Line + Webhooks) */}
         <TransitionSeries.Sequence durationInFrames={DURATIONS.advancedFeatures}>
           <AdvancedFeatures />
         </TransitionSeries.Sequence>

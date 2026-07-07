@@ -1,8 +1,32 @@
 import React from "react";
 import { useCurrentFrame, interpolate } from "remotion";
-import { FaMicrophone, FaBell } from "react-icons/fa";
+import { FaMicrophone, FaBell, FaVolumeUp } from "react-icons/fa";
 import { COLORS, fontFamily } from "../../constants";
 import { SoundWave } from "../../components/SoundWave";
+
+/** Small "playing" badge shown on a theme card while its sample sound plays. */
+const PlayingBadge: React.FC<{ opacity: number }> = ({ opacity }) => (
+  <div
+    style={{
+      position: "absolute",
+      top: 14,
+      right: 14,
+      display: "flex",
+      alignItems: "center",
+      gap: 7,
+      padding: "5px 12px",
+      borderRadius: 20,
+      backgroundColor: COLORS.green,
+      opacity,
+      boxShadow: COLORS.greenGlowSm,
+    }}
+  >
+    <FaVolumeUp style={{ fontSize: 12, color: COLORS.black }} />
+    <span style={{ fontFamily, fontSize: 12, fontWeight: 700, color: COLORS.black }}>
+      playing
+    </span>
+  </div>
+);
 
 export const AudioSets: React.FC = () => {
   const frame = useCurrentFrame();
@@ -23,6 +47,18 @@ export const AudioSets: React.FC = () => {
   });
 
   const bottomTextOpacity = interpolate(frame, [40, 50], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  // "Now playing" emphasis for each theme, synced to the real audio samples
+  // placed in PromoVideo.tsx (voice @ global 960, chime @ global 1008).
+  // Sub-scene local frame 0 == global 930, so voice ≈ local 30, chime ≈ local 78.
+  const voicePulse = interpolate(frame, [28, 34, 66, 74], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const chimePulse = interpolate(frame, [76, 82, 134, 142], [0, 1, 1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -77,6 +113,7 @@ export const AudioSets: React.FC = () => {
         >
           <div
             style={{
+              position: "relative",
               width: 500,
               height: 300,
               borderRadius: 16,
@@ -88,8 +125,11 @@ export const AudioSets: React.FC = () => {
               justifyContent: "center",
               gap: 20,
               padding: 30,
+              transform: `scale(${1 + voicePulse * 0.04})`,
+              boxShadow: `0 0 ${voicePulse * 45}px ${COLORS.green}66`,
             }}
           >
+            <PlayingBadge opacity={voicePulse} />
             <span
               style={{
                 fontFamily,
@@ -112,7 +152,7 @@ export const AudioSets: React.FC = () => {
                 opacity: 0.6,
               }}
             >
-              Professional AI-generated voice alerts
+              Says "Task completed" — Jessica voice
             </span>
           </div>
         </div>
@@ -141,6 +181,7 @@ export const AudioSets: React.FC = () => {
         >
           <div
             style={{
+              position: "relative",
               width: 500,
               height: 300,
               borderRadius: 16,
@@ -152,8 +193,11 @@ export const AudioSets: React.FC = () => {
               justifyContent: "center",
               gap: 20,
               padding: 30,
+              transform: `scale(${1 + chimePulse * 0.04})`,
+              boxShadow: `0 0 ${chimePulse * 45}px ${COLORS.green}66`,
             }}
           >
+            <PlayingBadge opacity={chimePulse} />
             <span
               style={{
                 fontFamily,
@@ -176,7 +220,7 @@ export const AudioSets: React.FC = () => {
                 opacity: 0.6,
               }}
             >
-              Clean, minimal notification sounds
+              Clean, minimal notification chime
             </span>
           </div>
         </div>

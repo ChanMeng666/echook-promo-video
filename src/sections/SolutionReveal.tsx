@@ -35,7 +35,7 @@ export const SolutionReveal: React.FC = () => {
   });
 
   // Badges (frame 60-90)
-  const badges = ["26 Hook Types", "Focus Flow", "Webhooks"];
+  const badges = ["39 Hook Events", "Status Line", "Webhooks"];
   const badgeScales = badges.map((_, i) =>
     spring({
       frame: frame - 60 - i * 8,

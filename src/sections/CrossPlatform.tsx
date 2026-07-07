@@ -90,10 +90,10 @@ export const CrossPlatform: React.FC = () => {
             label="AI Editors"
           />
           <CounterNumber
-            target={26}
+            target={39}
             startFrame={70}
             duration={25}
-            label="Hook Types"
+            label="Hook Events"
           />
           <CounterNumber
             target={2}
@@ -102,7 +102,7 @@ export const CrossPlatform: React.FC = () => {
             label="Audio Sets"
           />
           <CounterNumber
-            target={5}
+            target={4}
             startFrame={85}
             duration={20}
             label="Channels"

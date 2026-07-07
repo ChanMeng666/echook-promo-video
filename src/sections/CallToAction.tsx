@@ -111,13 +111,13 @@ export const CallToAction: React.FC = () => {
           <TypewriterBlock
             lines={[
               {
-                text: "# 30-Second Quick Setup",
+                text: "# tell your AI agent:",
                 delay: 0,
                 color: "#888",
               },
               {
-                text: "$ curl -sL .../quick-setup.sh | bash",
-                delay: 20,
+                text: "> install echook for me",
+                delay: 18,
                 color: COLORS.green,
               },
             ]}
@@ -197,7 +197,7 @@ export const CallToAction: React.FC = () => {
           }}
         >
           Never miss a notification.{" "}
-          <span style={{ color: COLORS.green }}>Try it in 30 seconds.</span>
+          <span style={{ color: COLORS.green }}>Never lose your place.</span>
         </div>
       )}
 

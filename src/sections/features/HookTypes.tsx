@@ -5,6 +5,8 @@ import {
   FaCheckCircle,
   FaUserFriends,
   FaShieldAlt,
+  FaBan,
+  FaPlusCircle,
   FaPlus,
 } from "react-icons/fa";
 import { COLORS, fontFamily } from "../../constants";
@@ -14,17 +16,23 @@ const essentialHooks: { name: string; icon: React.ReactNode }[] = [
   { name: "Stop", icon: <FaCheckCircle /> },
   { name: "SubagentStop", icon: <FaUserFriends /> },
   { name: "Permission", icon: <FaShieldAlt /> },
+  { name: "PermissionDenied", icon: <FaBan /> },
+  { name: "TaskCreated", icon: <FaPlusCircle /> },
 ];
 
 const optionalHookNames = [
+  "TaskCompleted", "SessionStart", "SessionEnd",
   "PreToolUse", "PostToolUse", "PostToolUseFailure",
-  "UserPromptSubmit", "PreCompact", "PostCompact",
-  "SessionStart", "SessionEnd", "SubagentStart",
-  "TeammateIdle", "TaskCompleted", "StopFailure",
+  "UserPromptSubmit", "SubagentStart", "PreCompact",
+  "PostCompact", "StopFailure", "TeammateIdle",
   "ConfigChange", "InstructionsLoaded",
   "WorktreeCreate", "WorktreeRemove",
   "Elicitation", "ElicitationResult",
-  "PermissionDenied", "CwdChanged", "FileChanged", "TaskCreated",
+  "CwdChanged", "FileChanged", "Setup",
+  "UserPromptExpansion", "PostToolBatch", "MessageDisplay",
+  "ShellBefore", "ShellAfter", "McpBefore", "McpAfter",
+  "FileRead", "AgentResponse", "AgentThinking",
+  "WorkspaceOpen", "TabFileEdit",
 ];
 
 export const HookTypes: React.FC = () => {
@@ -91,10 +99,19 @@ export const HookTypes: React.FC = () => {
           textTransform: "uppercase",
         }}
       >
-        4 Essential — Enabled by Default
+        6 Enabled by Default
       </div>
 
-      <div style={{ display: "flex", gap: 20, marginBottom: 30 }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 20,
+          justifyContent: "center",
+          maxWidth: 720,
+          marginBottom: 30,
+        }}
+      >
         {essentialHooks.map((hook, i) => {
           const scale = spring({
             frame: frame - 10 - i * 5,
@@ -113,8 +130,8 @@ export const HookTypes: React.FC = () => {
                 backgroundColor: `${COLORS.green}15`,
                 display: "flex",
                 alignItems: "center",
-                gap: 14,
-                padding: "0 18px",
+                gap: 12,
+                padding: "0 16px",
                 transform: `scale(${scale})`,
                 boxShadow: COLORS.greenGlowSm,
               }}
@@ -125,7 +142,7 @@ export const HookTypes: React.FC = () => {
               <span
                 style={{
                   fontFamily,
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: 600,
                   color: COLORS.white,
                 }}
@@ -158,7 +175,7 @@ export const HookTypes: React.FC = () => {
             color: COLORS.white,
           }}
         >
-          22 Optional Hooks
+          33 Optional Hooks
         </span>
       </div>
 
@@ -207,7 +224,7 @@ export const HookTypes: React.FC = () => {
           }),
         }}
       >
-        <span style={{ color: COLORS.green }}>26</span> Hook Types. Complete Lifecycle Coverage.
+        <span style={{ color: COLORS.green }}>39</span> Hook Events. Complete Lifecycle Coverage.
       </div>
     </div>
   );

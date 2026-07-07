@@ -102,7 +102,7 @@ async function generateVoiceover(voiceId) {
     "VO",
     `/text-to-speech/${voiceId}`,
     {
-      text: "Introducing eck hook. Twenty-six hooks. Three AI editors. Zero latency. Total awareness.",
+      text: "Introducing eck hook. Thirty-nine hooks. Three AI editors. Zero latency. Total awareness.",
       model_id: "eleven_multilingual_v2",
       voice_settings: { stability: 0.65, similarity_boost: 0.8 },
     },
@@ -113,7 +113,7 @@ async function generateVoiceover(voiceId) {
     "VO",
     `/text-to-speech/${voiceId}`,
     {
-      text: "Never miss a notification. Never lose your flow. Try it in 30 seconds.",
+      text: "Never miss a notification. Never lose your place. Just tell your agent to install it.",
       model_id: "eleven_multilingual_v2",
       voice_settings: { stability: 0.65, similarity_boost: 0.8 },
     },
@@ -124,7 +124,7 @@ async function generateVoiceover(voiceId) {
     "VO",
     `/text-to-speech/${voiceId}`,
     {
-      text: "Focus Flow keeps you centered. Webhooks keep you connected.",
+      text: "A live status line keeps you oriented. Webhooks keep you connected.",
       model_id: "eleven_multilingual_v2",
       voice_settings: { stability: 0.65, similarity_boost: 0.8 },
     },
