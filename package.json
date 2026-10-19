@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Promotional video for echook (formerly Claude Code Audio Hooks), built with Remotion",
   "repository": {},
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.421",
