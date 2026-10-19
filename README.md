@@ -12,6 +12,8 @@
 
 <!-- FILM: echook-first-film · 16:9 · 89 s — Chan uploads the video here in GitHub's web editor -->
 
+▶ Watch on YouTube: https://youtu.be/rwcbV4FpHho
+
 ## How it's made
 
 - **React scenes on a timeline.** Nine sections in `src/sections/` are joined with `wipe`, `fade` and `slide` transitions from `@remotion/transitions` in a `TransitionSeries`.
