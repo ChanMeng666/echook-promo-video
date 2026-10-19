@@ -10,7 +10,11 @@
 
 ### echook, the first film
 
-<!-- FILM: echook-first-film · 16:9 · 89 s — Chan uploads the video here in GitHub's web editor -->
+
+
+https://github.com/user-attachments/assets/643bae51-f060-49d9-975a-7d4acf91614f
+
+
 
 ▶ Watch on YouTube: https://youtu.be/rwcbV4FpHho
 
